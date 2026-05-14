@@ -1,0 +1,1027 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>VoltX — Las mejores ofertas en electrónicos</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.44.0/tabler-icons.min.css"/>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#08080f;--surface:#101018;--card:#161622;--card2:#1c1c2c;
+  --accent:#7C5CFC;--accent2:#FC5C7D;--green:#22c97a;--amber:#f5a623;
+  --text:#f0f0f8;--muted:#7a7a99;--border:rgba(255,255,255,0.07);--border2:rgba(255,255,255,0.12);
+}
+body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min-height:100vh}
+
+/* ── NAV ── */
+nav{display:flex;align-items:center;justify-content:space-between;padding:1rem 2rem;
+  border-bottom:1px solid var(--border);background:rgba(8,8,15,0.97);
+  position:sticky;top:0;z-index:200;backdrop-filter:blur(16px);gap:1rem;flex-wrap:wrap}
+.logo{font-family:'Syne',sans-serif;font-weight:800;font-size:1.2rem;letter-spacing:-0.5px}
+.logo span{color:var(--accent)}
+.logo sub{font-size:0.58rem;color:var(--muted);font-weight:400;vertical-align:bottom;margin-left:4px}
+.nav-right{display:flex;align-items:center;gap:0.75rem}
+.admin-badge{background:rgba(252,92,125,0.12);border:1px solid rgba(252,92,125,0.25);
+  color:var(--accent2);border-radius:20px;padding:0.25rem 0.8rem;font-size:0.75rem;
+  display:none;align-items:center;gap:5px}
+.admin-badge.on{display:flex}
+.nav-btn{background:transparent;border:1px solid var(--border2);color:var(--muted);
+  border-radius:8px;padding:0.4rem 0.9rem;font-size:0.82rem;cursor:pointer;
+  font-family:'DM Sans',sans-serif;transition:all 0.2s;display:flex;align-items:center;gap:5px}
+.nav-btn:hover{border-color:var(--accent);color:var(--accent)}
+.nav-btn.primary{background:var(--accent);color:#fff;border-color:var(--accent)}
+.nav-btn.primary:hover{opacity:0.88}
+
+/* ── HERO STRIP ── */
+.hero-strip{background:linear-gradient(90deg,rgba(124,92,252,0.08),rgba(252,92,125,0.05));
+  border-bottom:1px solid var(--border);padding:1.2rem 2rem;
+  display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem}
+.hero-left h1{font-family:'Syne',sans-serif;font-size:1.3rem;font-weight:700}
+.hero-left h1 em{font-style:normal;color:var(--accent)}
+.hero-left p{color:var(--muted);font-size:0.78rem;margin-top:0.2rem}
+.stats-row{display:flex;gap:1.5rem}
+.stat{text-align:center}
+.stat-num{font-family:'Syne',sans-serif;font-size:1.3rem;font-weight:700;color:var(--green)}
+.stat-label{font-size:0.65rem;color:var(--muted);text-transform:uppercase;letter-spacing:0.05em}
+
+/* ── SEARCH & FILTERS ── */
+.search-section{padding:1.4rem 2rem 0}
+.search-wrap{display:flex;gap:0.75rem;max-width:700px}
+.search-wrap-inner{position:relative;flex:1}
+.search-input{width:100%;background:var(--card);border:1px solid var(--border2);border-radius:10px;
+  padding:0.72rem 1rem 0.72rem 2.7rem;color:var(--text);font-family:'DM Sans',sans-serif;
+  font-size:0.92rem;outline:none;transition:border-color 0.2s}
+.search-input:focus{border-color:var(--accent)}
+.search-icon{position:absolute;left:10px;top:50%;transform:translateY(-50%);color:var(--muted);font-size:17px;pointer-events:none}
+
+.filter-section{padding:0.9rem 2rem 0.5rem}
+.filter-group{display:flex;align-items:center;gap:0.45rem;flex-wrap:wrap;margin-bottom:0.55rem}
+.filter-group-label{font-size:0.72rem;color:var(--muted);min-width:82px;font-weight:500}
+.chip{background:var(--card);border:1px solid var(--border);border-radius:20px;
+  padding:0.28rem 0.8rem;font-size:0.76rem;cursor:pointer;color:var(--muted);
+  transition:all 0.18s;white-space:nowrap}
+.chip:hover{color:var(--text);border-color:rgba(255,255,255,0.15)}
+.chip.active{border-color:var(--accent);color:var(--accent);background:rgba(124,92,252,0.1)}
+.chip.depart.active{border-color:var(--green);color:var(--green);background:rgba(34,201,122,0.08)}
+.chip.cat.active{border-color:var(--accent2);color:var(--accent2);background:rgba(252,92,125,0.08)}
+
+/* ── MAIN LAYOUT ── */
+.main{display:grid;grid-template-columns:1fr 320px;gap:1.5rem;padding:1rem 2rem 3rem;align-items:start}
+.col-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem}
+.col-header h2{font-family:'Syne',sans-serif;font-size:1rem;font-weight:600}
+.sort-select{background:var(--card);border:1px solid var(--border);border-radius:8px;
+  color:var(--text);padding:0.32rem 0.65rem;font-size:0.78rem;font-family:'DM Sans',sans-serif;outline:none}
+
+/* ── PRODUCT CARD (público) ── */
+.product-card-pub{background:var(--card);border:1px solid var(--border);border-radius:16px;
+  padding:1.2rem;margin-bottom:0.9rem;transition:border-color 0.2s}
+.product-card-pub:hover{border-color:rgba(124,92,252,0.2)}
+.pc-top{display:flex;gap:1rem;align-items:flex-start;margin-bottom:1rem}
+.pc-emoji{width:56px;height:56px;background:var(--surface);border-radius:10px;
+  display:flex;align-items:center;justify-content:center;font-size:2rem;flex-shrink:0}
+.pc-info{flex:1;min-width:0}
+.pc-name{font-family:'Syne',sans-serif;font-size:1rem;font-weight:700;margin-bottom:0.15rem;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pc-cat{font-size:0.68rem;color:var(--muted);margin-bottom:0.4rem}
+.pc-best-wrap{display:flex;align-items:center;gap:8px}
+.pc-best-price{font-size:1.25rem;font-weight:700;color:var(--green)}
+.pc-best-badge{font-size:0.68rem;background:rgba(34,201,122,0.1);color:var(--green);
+  border:1px solid rgba(34,201,122,0.2);border-radius:5px;padding:0.1rem 0.5rem}
+.pc-saving{font-size:0.75rem;color:var(--amber);margin-left:auto;white-space:nowrap}
+
+.stores-section-label{font-size:0.65rem;color:var(--muted);text-transform:uppercase;
+  letter-spacing:0.06em;margin-bottom:0.4rem;padding-left:2px}
+.store-prices-pub{display:flex;gap:0.4rem;flex-wrap:wrap;margin-bottom:0.6rem}
+.store-btn{display:flex;flex-direction:column;align-items:center;
+  background:var(--surface);border:1px solid var(--border);border-radius:9px;
+  padding:0.5rem 0.7rem;text-decoration:none;transition:all 0.18s;
+  min-width:75px;flex:1;max-width:105px;cursor:pointer}
+.store-btn:hover{border-color:var(--border2);transform:translateY(-1px)}
+.store-btn.best{border-color:rgba(34,201,122,0.4);background:rgba(34,201,122,0.05)}
+.store-btn.unavail{opacity:0.3;pointer-events:none}
+.store-btn .sname{font-size:0.62rem;color:var(--muted);margin-bottom:0.2rem;white-space:nowrap}
+.store-btn .sprice{font-size:0.9rem;font-weight:600;color:var(--text)}
+.store-btn.best .sprice{color:var(--green)}
+.store-btn .sna{font-size:0.68rem;color:var(--muted)}
+.pc-notes{margin-top:0.5rem;font-size:0.75rem;color:var(--muted);
+  display:flex;align-items:center;gap:4px}
+
+/* ── PRODUCT ROW (admin) ── */
+.product-row-admin{background:var(--card);border:1px solid rgba(252,92,125,0.12);border-radius:14px;
+  padding:1rem;margin-bottom:0.8rem;transition:border-color 0.2s}
+.product-row-admin:hover{border-color:rgba(252,92,125,0.25)}
+.pr-top{display:flex;gap:0.9rem;align-items:flex-start;margin-bottom:0.8rem}
+.pr-emoji{width:52px;height:52px;background:var(--surface);border-radius:9px;
+  display:flex;align-items:center;justify-content:center;font-size:1.8rem;flex-shrink:0}
+.pr-info{flex:1;min-width:0}
+.pr-name{font-family:'Syne',sans-serif;font-size:0.92rem;font-weight:600;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:0.15rem}
+.pr-cat{font-size:0.68rem;color:var(--muted)}
+.pr-actions{display:flex;gap:0.35rem;margin-left:auto;flex-shrink:0}
+.icon-btn{background:var(--card2);border:1px solid var(--border);border-radius:7px;
+  width:30px;height:30px;display:flex;align-items:center;justify-content:center;
+  cursor:pointer;color:var(--muted);font-size:14px;transition:all 0.18s}
+.icon-btn:hover{border-color:var(--accent);color:var(--accent)}
+.icon-btn.del:hover{border-color:var(--accent2);color:var(--accent2)}
+.admin-store-prices{display:flex;gap:0.35rem;flex-wrap:wrap}
+.asp{background:var(--surface);border:1px solid var(--border);border-radius:7px;
+  padding:0.35rem 0.55rem;font-size:0.7rem;text-align:center;min-width:68px;flex:1;max-width:95px}
+.asp .an{color:var(--muted);margin-bottom:0.15rem;font-size:0.6rem;white-space:nowrap}
+.asp .ap{font-weight:600;color:var(--text)}
+.asp.best-a .ap{color:var(--green)}
+.asp.na{opacity:0.35}
+
+/* ── SIDE PANELS ── */
+.side-panel{background:var(--card);border:1px solid var(--border);border-radius:16px;
+  padding:1.2rem;margin-bottom:1rem}
+.panel-title{font-family:'Syne',sans-serif;font-size:0.88rem;font-weight:700;
+  margin-bottom:1rem;display:flex;align-items:center;gap:7px}
+.panel-title i{color:var(--accent);font-size:17px}
+
+/* CALC */
+.calc-select{width:100%;background:var(--surface);border:1px solid var(--border2);
+  border-radius:8px;color:var(--text);padding:0.52rem 0.72rem;
+  font-family:'DM Sans',sans-serif;font-size:0.83rem;outline:none;margin-bottom:0.85rem}
+.mode-toggle{display:flex;background:var(--surface);border-radius:8px;padding:3px;margin-bottom:0.85rem}
+.mode-btn{flex:1;border:none;background:transparent;color:var(--muted);
+  padding:0.36rem;border-radius:6px;cursor:pointer;font-size:0.77rem;
+  font-family:'DM Sans',sans-serif;transition:all 0.2s}
+.mode-btn.active{background:var(--accent);color:#fff}
+.calc-row{margin-bottom:0.7rem}
+.calc-label{font-size:0.74rem;color:var(--muted);margin-bottom:0.25rem}
+.calc-input{width:100%;background:var(--surface);border:1px solid var(--border);border-radius:8px;
+  color:var(--text);padding:0.48rem 0.72rem;font-family:'DM Sans',sans-serif;
+  font-size:0.86rem;outline:none;transition:border-color 0.2s}
+.calc-input:focus{border-color:var(--accent)}
+.result-box{background:var(--surface);border-radius:10px;padding:0.85rem;margin-top:0.65rem}
+.result-row{display:flex;justify-content:space-between;align-items:center;
+  padding:0.28rem 0;border-bottom:1px solid var(--border);font-size:0.8rem}
+.result-row:last-child{border-bottom:none}
+.result-row .label{color:var(--muted)}
+.result-row.total .label{font-weight:600;color:var(--text)}
+.result-row.total .val{font-size:1.1rem;font-weight:700;color:var(--green)}
+.result-row.total.neg .val{color:var(--accent2)}
+.roi-wrap{margin-top:0.65rem}
+.roi-top{display:flex;justify-content:space-between;font-size:0.7rem;color:var(--muted);margin-bottom:0.3rem}
+.roi-bar{height:6px;background:var(--border);border-radius:4px;overflow:hidden}
+.roi-fill{height:100%;background:var(--green);border-radius:4px;transition:width 0.4s}
+.roi-fill.neg{background:var(--accent2)}
+
+/* COMM TABLE */
+.comm-row{display:flex;justify-content:space-between;padding:0.26rem 0;
+  border-bottom:1px solid var(--border);font-size:0.78rem}
+.comm-row:last-child{border-bottom:none}
+.comm-row .cl{color:var(--muted)}
+
+/* AFFILIATE TIP (público) */
+.aff-tip{background:rgba(124,92,252,0.07);border:1px solid rgba(124,92,252,0.15);
+  border-radius:12px;padding:1rem 1.1rem;font-size:0.82rem;line-height:1.6;color:var(--muted)}
+.aff-tip b{color:var(--text)}
+.aff-tip a{color:var(--accent);text-decoration:none}
+
+/* ── LOGIN OVERLAY ── */
+.login-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.85);z-index:600;
+  display:none;align-items:center;justify-content:center;backdrop-filter:blur(8px)}
+.login-overlay.open{display:flex}
+.login-box{background:var(--card);border:1px solid var(--border2);border-radius:20px;
+  padding:2rem;width:100%;max-width:360px;text-align:center}
+.login-box h2{font-family:'Syne',sans-serif;font-size:1.1rem;font-weight:700;margin-bottom:0.4rem}
+.login-box p{color:var(--muted);font-size:0.83rem;margin-bottom:1.5rem}
+.login-box i{font-size:2.5rem;color:var(--accent2);display:block;margin-bottom:0.8rem}
+.pw-input{width:100%;background:var(--surface);border:1px solid var(--border2);border-radius:10px;
+  color:var(--text);padding:0.75rem 1rem;font-family:'DM Sans',sans-serif;
+  font-size:1rem;outline:none;text-align:center;letter-spacing:0.1em;margin-bottom:0.75rem;
+  transition:border-color 0.2s}
+.pw-input:focus{border-color:var(--accent)}
+.pw-input.error{border-color:var(--accent2);animation:shake 0.3s}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+.login-btn{width:100%;background:var(--accent);color:#fff;border:none;border-radius:10px;
+  padding:0.75rem;font-size:0.95rem;font-weight:500;cursor:pointer;
+  font-family:'DM Sans',sans-serif;transition:opacity 0.2s}
+.login-btn:hover{opacity:0.88}
+.login-cancel{background:transparent;border:none;color:var(--muted);font-size:0.82rem;
+  cursor:pointer;margin-top:0.75rem;font-family:'DM Sans',sans-serif;transition:color 0.2s}
+.login-cancel:hover{color:var(--text)}
+
+/* ── ADD PRODUCT MODAL ── */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.78);z-index:500;
+  display:none;align-items:center;justify-content:center;backdrop-filter:blur(5px)}
+.modal-overlay.open{display:flex}
+.modal{background:var(--card);border:1px solid var(--border2);border-radius:20px;
+  padding:1.7rem;width:100%;max-width:580px;max-height:90vh;overflow-y:auto}
+.modal-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.3rem}
+.modal-header h2{font-family:'Syne',sans-serif;font-size:1.05rem;font-weight:700}
+.modal-close{background:transparent;border:1px solid var(--border);border-radius:8px;
+  color:var(--muted);width:32px;height:32px;display:flex;align-items:center;
+  justify-content:center;cursor:pointer;transition:all 0.2s}
+.modal-close:hover{border-color:var(--accent2);color:var(--accent2)}
+.form-row{margin-bottom:0.85rem}
+.form-label{font-size:0.76rem;color:var(--muted);margin-bottom:0.32rem;display:block}
+.form-input{width:100%;background:var(--surface);border:1px solid var(--border);border-radius:8px;
+  color:var(--text);padding:0.58rem 0.82rem;font-family:'DM Sans',sans-serif;font-size:0.87rem;outline:none;transition:border-color 0.2s}
+.form-input:focus{border-color:var(--accent)}
+.form-grid2{display:grid;grid-template-columns:1fr 1fr;gap:0.65rem}
+.spf-section-label{font-size:0.67rem;color:var(--muted);text-transform:uppercase;
+  letter-spacing:0.05em;border-bottom:1px solid var(--border);padding-bottom:0.28rem;margin-bottom:0.45rem}
+.spf-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:0.5rem;margin-bottom:0.7rem}
+.spf{display:flex;flex-direction:column;gap:0.18rem}
+.spf label{font-size:0.65rem;color:var(--muted)}
+.spf input{width:100%;background:var(--surface);border:1px solid var(--border);border-radius:7px;
+  color:var(--text);padding:0.4rem 0.55rem;font-family:'DM Sans',sans-serif;font-size:0.82rem;outline:none}
+.spf input:focus{border-color:var(--accent)}
+.ai-box{background:rgba(124,92,252,0.07);border:1px solid rgba(124,92,252,0.17);
+  border-radius:10px;padding:0.82rem;margin-bottom:1rem}
+.ai-box p{font-size:0.78rem;color:var(--muted);margin-bottom:0.5rem}
+.ai-row{display:flex;gap:0.5rem}
+.ai-fill-btn{background:var(--accent);color:#fff;border:none;border-radius:7px;
+  padding:0.42rem 0.9rem;font-size:0.78rem;cursor:pointer;font-family:'DM Sans',sans-serif;
+  display:flex;align-items:center;gap:5px;white-space:nowrap;transition:opacity 0.2s}
+.ai-fill-btn:hover{opacity:0.85}
+.ai-fill-btn:disabled{opacity:0.6;pointer-events:none}
+.ai-bubble{background:var(--surface);border:1px solid var(--border);border-radius:8px;
+  padding:0.65rem;margin-top:0.55rem;font-size:0.78rem;line-height:1.6;display:none}
+.ai-bubble.on{display:block}
+.save-btn{width:100%;background:var(--accent);color:#fff;border:none;border-radius:10px;
+  padding:0.78rem;font-size:0.92rem;font-weight:500;cursor:pointer;
+  font-family:'DM Sans',sans-serif;transition:opacity 0.2s;margin-top:0.4rem;
+  display:flex;align-items:center;justify-content:center;gap:7px}
+.save-btn:hover{opacity:0.88}
+
+/* ── AFFILIATE LINK MODAL ── */
+.aff-modal{background:var(--card);border:1px solid var(--border2);border-radius:20px;
+  padding:1.7rem;width:100%;max-width:500px}
+.aff-modal h2{font-family:'Syne',sans-serif;font-size:1.05rem;font-weight:700;margin-bottom:0.3rem}
+.aff-modal p{color:var(--muted);font-size:0.82rem;margin-bottom:1.2rem;line-height:1.6}
+.aff-field{margin-bottom:0.85rem}
+.aff-field label{font-size:0.75rem;color:var(--muted);display:flex;align-items:center;gap:5px;margin-bottom:0.3rem}
+.aff-field input{width:100%;background:var(--surface);border:1px solid var(--border);border-radius:8px;
+  color:var(--text);padding:0.55rem 0.8rem;font-family:'DM Sans',sans-serif;font-size:0.85rem;outline:none;transition:border-color 0.2s}
+.aff-field input:focus{border-color:var(--accent)}
+.aff-save-btn{width:100%;background:var(--accent);color:#fff;border:none;border-radius:10px;
+  padding:0.72rem;font-size:0.9rem;font-weight:500;cursor:pointer;
+  font-family:'DM Sans',sans-serif;margin-top:0.3rem;transition:opacity 0.2s}
+.aff-save-btn:hover{opacity:0.88}
+
+/* ── EMPTY ── */
+.empty{text-align:center;padding:4rem 2rem;color:var(--muted)}
+.empty i{font-size:3rem;margin-bottom:1rem;display:block;opacity:0.35}
+.empty h3{font-family:'Syne',sans-serif;font-size:1rem;margin-bottom:0.4rem;color:var(--text)}
+
+/* ── TOAST ── */
+.toast{position:fixed;bottom:1.5rem;right:1.5rem;background:var(--card2);
+  border:1px solid var(--border2);border-radius:10px;padding:0.65rem 1.1rem;
+  font-size:0.82rem;z-index:999;transform:translateY(70px);opacity:0;
+  transition:all 0.3s;display:flex;align-items:center;gap:7px}
+.toast.show{transform:translateY(0);opacity:1}
+
+@keyframes spin{to{transform:rotate(360deg)}}
+.spinning{animation:spin 1s linear infinite}
+
+@media(max-width:960px){.main{grid-template-columns:1fr}}
+@media(max-width:600px){
+  nav,hero-strip,.search-section,.filter-section,.main{padding-left:1rem;padding-right:1rem}
+  .hero-strip{padding:1rem}
+  .stats-row{gap:1rem}
+  .form-grid2{grid-template-columns:1fr}
+  .spf-grid{grid-template-columns:repeat(2,1fr)}
+  .store-prices-pub,.admin-store-prices{flex-wrap:wrap}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="logo">VOLT<span>X</span><sub id="navSub">ofertas</sub></div>
+  <div class="nav-right">
+    <span class="admin-badge" id="adminBadge"><i class="ti ti-shield-check" style="font-size:13px"></i> Modo Admin</span>
+    <button class="nav-btn" id="affBtn" onclick="openAffModal()" style="display:none">
+      <i class="ti ti-link" style="font-size:14px"></i> Mis links
+    </button>
+    <button class="nav-btn primary" id="addBtn" onclick="openModal()" style="display:none">
+      <i class="ti ti-plus" style="font-size:14px"></i> Agregar
+    </button>
+    <button class="nav-btn" id="adminLoginBtn" onclick="openLogin()">
+      <i class="ti ti-lock" style="font-size:14px"></i> Admin
+    </button>
+    <button class="nav-btn" id="adminLogoutBtn" onclick="logout()" style="display:none">
+      <i class="ti ti-logout" style="font-size:14px"></i> Salir
+    </button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="hero-strip">
+  <div class="hero-left">
+    <h1>Las mejores <em>ofertas</em> en electrónicos</h1>
+    <p id="heroSub">Amazon · Mercado Libre · AliExpress · Temu · eBay · Walmart · Liverpool · Bodega · Coppel · Sears · Sam's · Costco</p>
+  </div>
+  <div class="stats-row">
+    <div class="stat"><div class="stat-num" id="statProds">0</div><div class="stat-label">Productos</div></div>
+    <div class="stat"><div class="stat-num" id="statSaved">$0</div><div class="stat-label">Ahorro máx.</div></div>
+    <div class="stat"><div class="stat-num" id="statGain" style="display:none">$0</div><div class="stat-label" id="statGainLabel" style="display:none">Ganancia est.</div></div>
+  </div>
+</div>
+
+<!-- SEARCH -->
+<div class="search-section" style="padding-top:1.4rem">
+  <div class="search-wrap">
+    <div class="search-wrap-inner">
+      <i class="ti ti-search search-icon"></i>
+      <input type="text" class="search-input" id="searchInput" placeholder="Buscar productos..." oninput="render()"/>
+    </div>
+  </div>
+</div>
+
+<!-- FILTERS -->
+<div class="filter-section">
+  <div class="filter-group">
+    <span class="filter-group-label">🛍️ En línea:</span>
+    <div class="chip active" onclick="setF('online','all',this)">Todas</div>
+    <div class="chip" onclick="setF('online','amazon',this)">Amazon</div>
+    <div class="chip" onclick="setF('online','mercadolibre',this)">Mercado Libre</div>
+    <div class="chip" onclick="setF('online','aliexpress',this)">AliExpress</div>
+    <div class="chip" onclick="setF('online','temu',this)">Temu</div>
+    <div class="chip" onclick="setF('online','ebay',this)">eBay</div>
+    <div class="chip" onclick="setF('online','linio',this)">Linio</div>
+  </div>
+  <div class="filter-group">
+    <span class="filter-group-label">🏪 Tiendas:</span>
+    <div class="chip depart active" onclick="setF('depart','all',this)">Todas</div>
+    <div class="chip depart" onclick="setF('depart','walmart',this)">Walmart</div>
+    <div class="chip depart" onclick="setF('depart','liverpool',this)">Liverpool</div>
+    <div class="chip depart" onclick="setF('depart','bodega',this)">Bodega</div>
+    <div class="chip depart" onclick="setF('depart','coppel',this)">Coppel</div>
+    <div class="chip depart" onclick="setF('depart','suburbia',this)">Suburbia</div>
+    <div class="chip depart" onclick="setF('depart','sears',this)">Sears</div>
+    <div class="chip depart" onclick="setF('depart','sams',this)">Sam's</div>
+    <div class="chip depart" onclick="setF('depart','costco',this)">Costco</div>
+  </div>
+  <div class="filter-group">
+    <span class="filter-group-label">📦 Categoría:</span>
+    <div class="chip cat active" onclick="setF('cat','all',this)">Todas</div>
+    <div class="chip cat" onclick="setF('cat','📱 Smartphones',this)">📱 Smartphones</div>
+    <div class="chip cat" onclick="setF('cat','💻 Laptops',this)">💻 Laptops</div>
+    <div class="chip cat" onclick="setF('cat','📟 Tablets',this)">📟 Tablets</div>
+    <div class="chip cat" onclick="setF('cat','🎮 Gaming',this)">🎮 Gaming</div>
+    <div class="chip cat" onclick="setF('cat','🎧 Audio',this)">🎧 Audio</div>
+    <div class="chip cat" onclick="setF('cat','📺 TVs',this)">📺 TVs</div>
+    <div class="chip cat" onclick="setF('cat','⌚ Wearables',this)">⌚ Wearables</div>
+    <div class="chip cat" onclick="setF('cat','📷 Fotografía',this)">📷 Fotografía</div>
+    <div class="chip cat" onclick="setF('cat','🖥️ Cómputo',this)">🖥️ Cómputo</div>
+    <div class="chip cat" onclick="setF('cat','🔌 Hogar inteligente',this)">🔌 Hogar</div>
+    <div class="chip cat" onclick="setF('cat','🔋 Accesorios',this)">🔋 Accesorios</div>
+  </div>
+</div>
+
+<!-- MAIN -->
+<div class="main">
+  <div>
+    <div class="col-header">
+      <h2 id="colTitle">Ofertas destacadas <span id="productCount" style="color:var(--muted);font-weight:400;font-size:0.88rem"></span></h2>
+      <select class="sort-select" id="sortSelect" onchange="render()">
+        <option value="savings">Mayor ahorro</option>
+        <option value="price">Menor precio</option>
+        <option value="name">A-Z</option>
+      </select>
+    </div>
+    <div id="productsList"></div>
+  </div>
+
+  <!-- SIDE -->
+  <div id="sidePanel">
+    <!-- Shown to public -->
+    <div id="pubSide">
+      <div class="side-panel">
+        <div class="panel-title"><i class="ti ti-bolt"></i> ¿Cómo funciona?</div>
+        <div style="font-size:0.82rem;line-height:1.8;color:var(--muted)">
+          <div style="margin-bottom:0.6rem">🔍 <b style="color:var(--text)">Compara precios</b> entre las principales tiendas de México en un solo lugar.</div>
+          <div style="margin-bottom:0.6rem">✅ <b style="color:var(--text)">El precio más bajo</b> siempre se resalta en verde.</div>
+          <div>🛒 <b style="color:var(--text)">Haz clic</b> en cualquier tienda para ir directo a comprar.</div>
+        </div>
+      </div>
+      <div class="side-panel aff-tip">
+        <div class="panel-title" style="margin-bottom:0.6rem"><i class="ti ti-info-circle"></i> Aviso</div>
+        <div style="font-size:0.8rem;color:var(--muted);line-height:1.7">
+          Algunos links en esta página son de afiliado. Si compras a través de ellos apoyas este sitio sin costo extra para ti. ¡Gracias!
+        </div>
+      </div>
+    </div>
+
+    <!-- Shown to admin -->
+    <div id="adminSide" style="display:none">
+      <div class="side-panel">
+        <div class="panel-title"><i class="ti ti-calculator"></i> Calculadora de ganancia</div>
+        <select class="calc-select" id="calcProduct" onchange="calcUpdate()">
+          <option value="">— Selecciona un producto —</option>
+        </select>
+        <div class="mode-toggle">
+          <button class="mode-btn active" id="modeReventa" onclick="setMode('reventa')">💰 Reventa</button>
+          <button class="mode-btn" id="modeAfiliado" onclick="setMode('afiliado')">🔗 Afiliado</button>
+        </div>
+        <div id="reventaFields">
+          <div class="calc-row"><div class="calc-label">Precio de compra (MXN)</div>
+            <input class="calc-input" type="number" id="buyPrice" placeholder="0.00" oninput="calcUpdate()"/></div>
+          <div class="calc-row"><div class="calc-label">Precio de venta (MXN)</div>
+            <input class="calc-input" type="number" id="sellPrice" placeholder="0.00" oninput="calcUpdate()"/></div>
+          <div class="calc-row"><div class="calc-label">Costo de envío</div>
+            <input class="calc-input" type="number" id="shipping" placeholder="0" oninput="calcUpdate()"/></div>
+          <div class="calc-row"><div class="calc-label">Unidades</div>
+            <input class="calc-input" type="number" id="units" value="1" oninput="calcUpdate()"/></div>
+        </div>
+        <div id="afiliadoFields" style="display:none">
+          <div class="calc-row"><div class="calc-label">Precio del producto (MXN)</div>
+            <input class="calc-input" type="number" id="affPrice" placeholder="0.00" oninput="calcUpdate()"/></div>
+          <div class="calc-row"><div class="calc-label">% de comisión</div>
+            <input class="calc-input" type="number" id="commPct" placeholder="ej. 8" oninput="calcUpdate()"/></div>
+          <div class="calc-row"><div class="calc-label">Ventas estimadas / mes</div>
+            <input class="calc-input" type="number" id="estSales" placeholder="ej. 20" oninput="calcUpdate()"/></div>
+        </div>
+        <div class="result-box">
+          <div class="result-row"><span class="label">Ingreso bruto</span><span class="val" id="rIncome">—</span></div>
+          <div class="result-row"><span class="label">Costos</span><span class="val" id="rCosts">—</span></div>
+          <div class="result-row total" id="rTotalRow"><span class="label">Ganancia neta</span><span class="val" id="rTotal">—</span></div>
+        </div>
+        <div class="roi-wrap">
+          <div class="roi-top"><span>Margen</span><span id="roiPct">—</span></div>
+          <div class="roi-bar"><div class="roi-fill" id="roiFill" style="width:0%"></div></div>
+        </div>
+      </div>
+
+      <div class="side-panel">
+        <div class="panel-title"><i class="ti ti-percent"></i> Comisiones afiliado</div>
+        <div id="commTable"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- LOGIN OVERLAY -->
+<div class="login-overlay" id="loginOverlay">
+  <div class="login-box">
+    <i class="ti ti-shield-lock"></i>
+    <h2>Acceso Admin</h2>
+    <p>Solo tú puedes entrar aquí. Ingresa tu contraseña para gestionar los productos.</p>
+    <input type="password" class="pw-input" id="pwInput" placeholder="••••••••"
+      onkeydown="if(event.key==='Enter')doLogin()"/>
+    <button class="login-btn" onclick="doLogin()">Entrar</button><br/>
+    <button class="login-cancel" onclick="closeLogin()">Cancelar</button>
+  </div>
+</div>
+
+<!-- ADD/EDIT MODAL -->
+<div class="modal-overlay" id="modalOverlay" onclick="closeOut(event)">
+  <div class="modal">
+    <div class="modal-header">
+      <h2 id="modalTitle"><i class="ti ti-package" style="color:var(--accent);margin-right:6px"></i>Agregar producto</h2>
+      <button class="modal-close" onclick="closeModal()"><i class="ti ti-x"></i></button>
+    </div>
+    <div class="ai-box">
+      <p>✦ Escribe el nombre y la IA llenará los precios automáticamente</p>
+      <div class="ai-row">
+        <input class="form-input" id="aiQuery" placeholder='ej. "Nintendo Switch 2"' style="flex:1;font-size:0.82rem"/>
+        <button class="ai-fill-btn" id="aiFillBtn" onclick="aiAutoFill()">
+          <i class="ti ti-sparkles" style="font-size:13px"></i> IA
+        </button>
+      </div>
+      <div class="ai-bubble" id="aiBubble"></div>
+    </div>
+    <div class="form-grid2">
+      <div class="form-row" style="grid-column:1/-1">
+        <label class="form-label">Nombre del producto</label>
+        <input class="form-input" id="fName" placeholder="ej. Samsung Galaxy S25"/>
+      </div>
+      <div class="form-row">
+        <label class="form-label">Categoría</label>
+        <select class="form-input" id="fCat">
+          <option>📱 Smartphones</option><option>💻 Laptops</option>
+          <option>📟 Tablets</option><option>🎮 Gaming</option>
+          <option>🎧 Audio</option><option>📺 TVs</option>
+          <option>⌚ Wearables</option><option>📷 Fotografía</option>
+          <option>🖥️ Cómputo</option><option>🔌 Hogar inteligente</option>
+          <option>🔋 Accesorios</option>
+        </select>
+      </div>
+      <div class="form-row">
+        <label class="form-label">Emoji</label>
+        <input class="form-input" id="fEmoji" placeholder="📱" maxlength="4"/>
+      </div>
+    </div>
+    <div class="form-row">
+      <label class="form-label">Precios por tienda (MXN) — 0 si no disponible</label>
+      <div class="spf-section-label" style="margin-top:0.5rem">🛍️ En línea</div>
+      <div class="spf-grid">
+        <div class="spf"><label>🟠 Amazon</label><input type="number" id="pAmazon" placeholder="0"/></div>
+        <div class="spf"><label>🟡 Mercado Libre</label><input type="number" id="pML" placeholder="0"/></div>
+        <div class="spf"><label>🔴 AliExpress</label><input type="number" id="pAli" placeholder="0"/></div>
+        <div class="spf"><label>🟣 Temu</label><input type="number" id="pTemu" placeholder="0"/></div>
+        <div class="spf"><label>⚫ eBay</label><input type="number" id="pEbay" placeholder="0"/></div>
+        <div class="spf"><label>🔵 Linio</label><input type="number" id="pLinio" placeholder="0"/></div>
+      </div>
+      <div class="spf-section-label">🏪 Departamentales</div>
+      <div class="spf-grid">
+        <div class="spf"><label>🔵 Walmart</label><input type="number" id="pWalmart" placeholder="0"/></div>
+        <div class="spf"><label>🟣 Liverpool</label><input type="number" id="pLiverpool" placeholder="0"/></div>
+        <div class="spf"><label>🟢 Bodega</label><input type="number" id="pBodega" placeholder="0"/></div>
+        <div class="spf"><label>🟡 Coppel</label><input type="number" id="pCoppel" placeholder="0"/></div>
+        <div class="spf"><label>🩷 Suburbia</label><input type="number" id="pSuburbia" placeholder="0"/></div>
+        <div class="spf"><label>⚪ Sears</label><input type="number" id="pSears" placeholder="0"/></div>
+        <div class="spf"><label>🔴 Sam's</label><input type="number" id="pSams" placeholder="0"/></div>
+        <div class="spf"><label>🔵 Costco</label><input type="number" id="pCostco" placeholder="0"/></div>
+      </div>
+    </div>
+    <div class="form-row">
+      <label class="form-label">Tu link de afiliado (opcional — reemplaza el link genérico)</label>
+      <input class="form-input" id="fLink" placeholder="https://amzn.to/... o https://mercadolibre.com/..."/>
+    </div>
+    <div class="form-row">
+      <label class="form-label">Notas internas</label>
+      <input class="form-input" id="fNotes" placeholder="ej. Stock limitado, mejor precio en AliExpress, etc."/>
+    </div>
+    <button class="save-btn" onclick="saveProduct()">
+      <i class="ti ti-device-floppy" style="font-size:14px"></i> Guardar producto
+    </button>
+  </div>
+</div>
+
+<!-- AFFILIATE LINKS MODAL -->
+<div class="modal-overlay" id="affOverlay" onclick="if(event.target.id==='affOverlay')closeAffModal()">
+  <div class="aff-modal">
+    <div class="modal-header">
+      <h2><i class="ti ti-link" style="color:var(--accent);margin-right:6px"></i>Mis links de afiliado</h2>
+      <button class="modal-close" onclick="closeAffModal()"><i class="ti ti-x"></i></button>
+    </div>
+    <p>Pega aquí tus links base de afiliado por tienda. Cuando el público haga clic en esa tienda, irá a tu link de afiliado y ganarás comisión.</p>
+    <div class="aff-field"><label>🟠 Amazon — ID de afiliado</label>
+      <input class="form-input" id="affAmazon" placeholder="ej. tuvoltx-20 (tu tracking ID)"/></div>
+    <div class="aff-field"><label>🟡 Mercado Libre — link base</label>
+      <input class="form-input" id="affML" placeholder="https://mercadolibre.com.mx/?aff=..."/></div>
+    <div class="aff-field"><label>🔴 AliExpress — link base</label>
+      <input class="form-input" id="affAli" placeholder="https://s.click.aliexpress.com/..."/></div>
+    <div class="aff-field"><label>🟣 Temu — link base</label>
+      <input class="form-input" id="affTemu" placeholder="https://temu.com/..."/></div>
+    <button class="aff-save-btn" onclick="saveAff()">Guardar mis links de afiliado</button>
+  </div>
+</div>
+
+<div class="toast" id="toast"><i class="ti ti-check" id="toastIcon"></i><span id="toastMsg">Listo</span></div>
+
+<script>
+// ═══════════════════════════════════════════
+// CONFIGURACIÓN — cambia esto antes de publicar
+// ═══════════════════════════════════════════
+const ADMIN_PASSWORD = 'Delta77';
+
+const ONLINE = [
+  {key:'amazon',    name:'Amazon',      e:'🟠'},
+  {key:'mercadolibre',name:'Meli',      e:'🟡'},
+  {key:'aliexpress',name:'AliExpress',  e:'🔴'},
+  {key:'temu',      name:'Temu',        e:'🟣'},
+  {key:'ebay',      name:'eBay',        e:'⚫'},
+  {key:'linio',     name:'Linio',       e:'🔵'},
+];
+const DEPART = [
+  {key:'walmart',   name:'Walmart',     e:'🔵'},
+  {key:'liverpool', name:'Liverpool',   e:'🟣'},
+  {key:'bodega',    name:'Bodega',      e:'🟢'},
+  {key:'coppel',    name:'Coppel',      e:'🟡'},
+  {key:'suburbia',  name:'Suburbia',    e:'🩷'},
+  {key:'sears',     name:'Sears',       e:'⚪'},
+  {key:'sams',      name:"Sam's",       e:'🔴'},
+  {key:'costco',    name:'Costco',      e:'🔵'},
+];
+const ALL = [...ONLINE,...DEPART];
+
+const STORE_URLS = {
+  amazon:(q,aff)=>aff?`https://www.amazon.com.mx/s?k=${encodeURIComponent(q)}&tag=${aff}`:`https://www.amazon.com.mx/s?k=${encodeURIComponent(q)}`,
+  mercadolibre:(q,aff)=>aff||`https://listado.mercadolibre.com.mx/${encodeURIComponent(q)}`,
+  aliexpress:(q,aff)=>aff||`https://www.aliexpress.com/wholesale?SearchText=${encodeURIComponent(q)}`,
+  temu:(q,aff)=>aff||`https://www.temu.com/search_result.html?search_key=${encodeURIComponent(q)}`,
+  ebay:(q)=>`https://www.ebay.com/sch/i.html?_nkw=${encodeURIComponent(q)}`,
+  linio:(q)=>`https://www.linio.com.mx/search#q=${encodeURIComponent(q)}`,
+  walmart:(q)=>`https://www.walmart.com.mx/search?q=${encodeURIComponent(q)}`,
+  liverpool:(q)=>`https://www.liverpool.com.mx/tienda/search?search=${encodeURIComponent(q)}`,
+  bodega:(q)=>`https://www.bodegaaurrera.com.mx/q?query=${encodeURIComponent(q)}`,
+  coppel:(q)=>`https://www.coppel.com/search#q=${encodeURIComponent(q)}`,
+  suburbia:(q)=>`https://www.suburbia.com.mx/search?Ntt=${encodeURIComponent(q)}`,
+  sears:(q)=>`https://www.sears.com.mx/search?query=${encodeURIComponent(q)}`,
+  sams:(q)=>`https://www.sams.com.mx/search?q=${encodeURIComponent(q)}`,
+  costco:(q)=>`https://www.costco.com.mx/buscar?q=${encodeURIComponent(q)}`,
+};
+
+const COMMS = [
+  {n:'Amazon Afiliados',v:'1–10%'},{n:'Mercado Libre',v:'6–16%'},
+  {n:'AliExpress Aff.',v:'3–9%'},{n:'Temu Aff.',v:'5–12%'},
+  {n:'eBay Partner',v:'1–6%'},{n:'Walmart Aff.',v:'1–4%'},
+  {n:'Liverpool Aff.',v:'2–5%'},{n:'Coppel Aff.',v:'2–4%'},
+  {n:'Reventa típica',v:'20–40%',hi:true},
+];
+
+// ── STATE ──
+let isAdmin = false;
+let products = [], aff = {}, filters = {online:'all',depart:'all',cat:'all'};
+let calcMode = 'reventa', editingId = null;
+
+function load(){
+  try{products=JSON.parse(localStorage.getItem('voltx3_products')||'[]');}catch(e){products=[];}
+  try{aff=JSON.parse(localStorage.getItem('voltx3_aff')||'{}');}catch(e){aff={};}
+  if(!products.length) seedDemo();
+}
+function save(){localStorage.setItem('voltx3_products',JSON.stringify(products));}
+function saveAffData(){localStorage.setItem('voltx3_aff',JSON.stringify(aff));}
+
+function seedDemo(){
+  products=[
+    {id:1,name:'iPhone 15 Pro 256GB',cat:'📱 Smartphones',emoji:'📱',
+      prices:{amazon:18999,mercadolibre:17500,aliexpress:15800,temu:0,ebay:16200,linio:0,walmart:19200,liverpool:19500,bodega:0,coppel:18800,suburbia:0,sears:0,sams:0,costco:0},link:'',notes:'AliExpress más barato, revisar vendedor'},
+    {id:2,name:'Sony WH-1000XM5',cat:'🎧 Audio',emoji:'🎧',
+      prices:{amazon:5499,mercadolibre:5200,aliexpress:4100,temu:3800,ebay:4500,linio:5300,walmart:5800,liverpool:5999,bodega:0,coppel:5600,suburbia:0,sears:5900,sams:0,costco:5100},link:'',notes:''},
+    {id:3,name:'Samsung 55" QLED 4K',cat:'📺 TVs',emoji:'📺',
+      prices:{amazon:12500,mercadolibre:11800,aliexpress:0,temu:0,ebay:0,linio:12000,walmart:13200,liverpool:14500,bodega:11500,coppel:12800,suburbia:0,sears:13000,sams:11200,costco:10900},link:'',notes:"Sam's y Costco mejor precio"},
+  ];
+  save();
+}
+
+// ── AUTH ──
+function openLogin(){document.getElementById('loginOverlay').classList.add('open');setTimeout(()=>document.getElementById('pwInput').focus(),100);}
+function closeLogin(){document.getElementById('loginOverlay').classList.remove('open');document.getElementById('pwInput').value='';}
+function doLogin(){
+  const pw=document.getElementById('pwInput').value;
+  if(pw===ADMIN_PASSWORD){
+    isAdmin=true; closeLogin(); applyMode(); showToast('Bienvenido, admin ✓');
+  } else {
+    const inp=document.getElementById('pwInput');
+    inp.classList.add('error');
+    setTimeout(()=>inp.classList.remove('error'),400);
+    inp.value='';
+  }
+}
+function logout(){isAdmin=false;applyMode();showToast('Sesión cerrada');}
+
+function applyMode(){
+  // nav
+  document.getElementById('adminBadge').classList.toggle('on',isAdmin);
+  document.getElementById('addBtn').style.display=isAdmin?'flex':'none';
+  document.getElementById('affBtn').style.display=isAdmin?'flex':'none';
+  document.getElementById('adminLoginBtn').style.display=isAdmin?'none':'flex';
+  document.getElementById('adminLogoutBtn').style.display=isAdmin?'flex':'none';
+  // side
+  document.getElementById('pubSide').style.display=isAdmin?'none':'block';
+  document.getElementById('adminSide').style.display=isAdmin?'block':'none';
+  // stats
+  document.getElementById('statGain').style.display=isAdmin?'block':'none';
+  document.getElementById('statGainLabel').style.display=isAdmin?'block':'none';
+  // sub
+  document.getElementById('navSub').textContent=isAdmin?'admin':'ofertas';
+  document.getElementById('colTitle').innerHTML=isAdmin
+    ?'Panel admin <span id="productCount" style="color:var(--muted);font-weight:400;font-size:0.88rem"></span>'
+    :'Ofertas destacadas <span id="productCount" style="color:var(--muted);font-weight:400;font-size:0.88rem"></span>';
+  render();
+  if(isAdmin){buildCommTable();updateCalcSelect();}
+}
+
+// ── HELPERS ──
+function bestOf(p,stores){
+  const e=stores.map(s=>({s,p:p.prices[s.key]||0})).filter(x=>x.p>0);
+  return e.length?e.reduce((a,b)=>a.p<b.p?a:b):null;
+}
+function worstOf(p,stores){
+  const e=stores.map(s=>({s,p:p.prices[s.key]||0})).filter(x=>x.p>0);
+  return e.length>1?e.reduce((a,b)=>a.p>b.p?a:b):null;
+}
+const ob=(p)=>bestOf(p,ALL);
+const ow=(p)=>worstOf(p,ALL);
+const sav=(p)=>{const b=ob(p),w=ow(p);return b&&w?w.p-b.p:0;};
+function storeUrl(key,name){
+  const fn=STORE_URLS[key];
+  return fn?fn(name,aff[key]||''):'#';
+}
+
+// ── RENDER ──
+function render(){
+  const q=document.getElementById('searchInput').value.toLowerCase();
+  const sort=document.getElementById('sortSelect').value;
+  let list=products.filter(p=>{
+    if(q&&!p.name.toLowerCase().includes(q)&&!p.cat.toLowerCase().includes(q)) return false;
+    if(filters.cat!=='all'&&p.cat!==filters.cat) return false;
+    if(filters.online!=='all'&&!(p.prices[filters.online]>0)) return false;
+    if(filters.depart!=='all'&&!(p.prices[filters.depart]>0)) return false;
+    return true;
+  });
+  if(sort==='savings') list.sort((a,b)=>sav(b)-sav(a));
+  else if(sort==='price') list.sort((a,b)=>(ob(a)?.p||99999)-(ob(b)?.p||99999));
+  else list.sort((a,b)=>a.name.localeCompare(b.name));
+
+  const pc=document.getElementById('productCount');
+  if(pc) pc.textContent=`(${list.length})`;
+
+  updateStats();
+  const el=document.getElementById('productsList');
+  if(!list.length){
+    el.innerHTML=`<div class="empty"><i class="ti ti-mood-empty"></i><h3>${isAdmin?'Sin productos aún':'Sin resultados'}</h3><p>${isAdmin?'Agrega tu primer producto con el botón de arriba.':'Prueba otro filtro o categoría.'}</p></div>`;
+    return;
+  }
+  el.innerHTML=list.map(p=>isAdmin?renderAdmin(p):renderPublic(p)).join('');
+}
+
+function renderPublic(p){
+  const best=ob(p), worst=ow(p);
+  const saving=best&&worst?worst.p-best.p:0;
+
+  const makeRow=(stores,label)=>{
+    const cards=stores.map(s=>{
+      const price=p.prices[s.key]||0;
+      const isBest=best&&s.key===best.s.key&&price>0;
+      const url=storeUrl(s.key,p.name);
+      return `<a class="store-btn${isBest?' best':''}${!price?' unavail':''}"
+        href="${price?url:'#'}" ${price?'target="_blank" rel="noopener"':''}>
+        <div class="sname">${s.e} ${s.name}</div>
+        ${price?`<div class="sprice">$${price.toLocaleString()}</div>`:'<div class="sna">—</div>'}
+      </a>`;
+    }).join('');
+    return `<div class="stores-section-label">${label}</div>
+            <div class="store-prices-pub">${cards}</div>`;
+  };
+
+  return `<div class="product-card-pub">
+    <div class="pc-top">
+      <div class="pc-emoji">${p.emoji||'📦'}</div>
+      <div class="pc-info">
+        <div class="pc-name">${p.name}</div>
+        <div class="pc-cat">${p.cat}</div>
+        <div class="pc-best-wrap">
+          ${best?`<span class="pc-best-price">$${best.p.toLocaleString()}</span>
+            <span class="pc-best-badge">${best.s.e} ${best.s.name}</span>`
+            :'<span style="color:var(--muted);font-size:0.85rem">Sin precios</span>'}
+          ${saving>0?`<span class="pc-saving">↓ $${saving.toLocaleString()} vs más caro</span>`:''}
+        </div>
+      </div>
+    </div>
+    ${makeRow(ONLINE,'🛍️ Tiendas en línea')}
+    ${makeRow(DEPART,'🏪 Departamentales')}
+    ${p.notes?`<div class="pc-notes"><i class="ti ti-info-circle" style="font-size:13px"></i>${p.notes}</div>`:''}
+  </div>`;
+}
+
+function renderAdmin(p){
+  const best=ob(p);
+
+  const makeRow=(stores)=>stores.map(s=>{
+    const price=p.prices[s.key]||0;
+    const isBest=best&&s.key===best.s.key&&price>0;
+    return `<div class="asp${isBest?' best-a':''}${!price?' na':''}">
+      <div class="an">${s.e} ${s.name}</div>
+      <div class="ap">${price?'$'+price.toLocaleString():'—'}</div>
+    </div>`;
+  }).join('');
+
+  return `<div class="product-row-admin">
+    <div class="pr-top">
+      <div class="pr-emoji">${p.emoji||'📦'}</div>
+      <div class="pr-info">
+        <div class="pr-name">${p.name}</div>
+        <div class="pr-cat">${p.cat} ${p.notes?'· '+p.notes:''}</div>
+      </div>
+      <div class="pr-actions">
+        <button class="icon-btn" title="Calculadora" onclick="selectCalc(${p.id})"><i class="ti ti-calculator"></i></button>
+        <button class="icon-btn" title="Editar" onclick="editProduct(${p.id})"><i class="ti ti-pencil"></i></button>
+        <button class="icon-btn del" title="Eliminar" onclick="deleteProduct(${p.id})"><i class="ti ti-trash"></i></button>
+      </div>
+    </div>
+    <div style="font-size:0.65rem;color:var(--muted);margin-bottom:0.35rem;text-transform:uppercase;letter-spacing:0.05em">🛍️ En línea</div>
+    <div class="admin-store-prices" style="margin-bottom:0.5rem">${makeRow(ONLINE)}</div>
+    <div style="font-size:0.65rem;color:var(--muted);margin-bottom:0.35rem;text-transform:uppercase;letter-spacing:0.05em">🏪 Departamentales</div>
+    <div class="admin-store-prices">${makeRow(DEPART)}</div>
+  </div>`;
+}
+
+function updateStats(){
+  document.getElementById('statProds').textContent=products.length;
+  const totSav=products.reduce((a,p)=>a+sav(p),0);
+  document.getElementById('statSaved').textContent='$'+Math.round(totSav).toLocaleString();
+  if(isAdmin){
+    const totG=products.reduce((a,p)=>{const b=ob(p);return b?a+b.p*0.25:a;},0);
+    document.getElementById('statGain').textContent='$'+Math.round(totG).toLocaleString();
+  }
+}
+
+function setF(group,val,el){
+  filters[group]=val;
+  const grp=group==='cat'?'cat':group==='depart'?'depart':'';
+  document.querySelectorAll(`.chip${grp?'.'+grp:''}`).forEach(c=>{
+    if((!grp&&!c.classList.contains('depart')&&!c.classList.contains('cat'))||
+       (grp&&c.classList.contains(grp))) c.classList.remove('active');
+  });
+  // simpler: just remove active from siblings
+  el.parentElement.querySelectorAll('.chip').forEach(c=>c.classList.remove('active'));
+  el.classList.add('active');
+  render();
+}
+
+// ── CALC ──
+function setMode(mode){
+  calcMode=mode;
+  document.getElementById('modeReventa').classList.toggle('active',mode==='reventa');
+  document.getElementById('modeAfiliado').classList.toggle('active',mode==='afiliado');
+  document.getElementById('reventaFields').style.display=mode==='reventa'?'block':'none';
+  document.getElementById('afiliadoFields').style.display=mode==='afiliado'?'block':'none';
+  calcUpdate();
+}
+function updateCalcSelect(){
+  const sel=document.getElementById('calcProduct');
+  const cur=sel.value;
+  sel.innerHTML='<option value="">— Selecciona un producto —</option>'+
+    products.map(p=>`<option value="${p.id}">${p.emoji||'📦'} ${p.name}</option>`).join('');
+  if(cur) sel.value=cur;
+}
+function calcUpdate(){
+  const pid=parseInt(document.getElementById('calcProduct').value);
+  const prod=products.find(p=>p.id===pid);
+  if(calcMode==='reventa'){
+    let buy=parseFloat(document.getElementById('buyPrice').value)||0;
+    let sell=parseFloat(document.getElementById('sellPrice').value)||0;
+    let ship=parseFloat(document.getElementById('shipping').value)||0;
+    let units=parseFloat(document.getElementById('units').value)||1;
+    if(!buy&&prod){const b=ob(prod);if(b){buy=b.p;document.getElementById('buyPrice').value=b.p;}}
+    const income=sell*units,costs=buy*units+ship,net=income-costs;
+    const margin=income>0?(net/income)*100:0;
+    document.getElementById('rIncome').textContent=income>0?'$'+income.toLocaleString():'—';
+    document.getElementById('rCosts').textContent=costs>0?'$'+costs.toLocaleString():'—';
+    document.getElementById('rTotal').textContent=income>0?(net>=0?'':'−')+'$'+Math.abs(Math.round(net)).toLocaleString():'—';
+    document.getElementById('rTotalRow').classList.toggle('neg',net<0);
+    document.getElementById('roiFill').style.width=Math.min(Math.max(margin,0),100)+'%';
+    document.getElementById('roiFill').classList.toggle('neg',net<0);
+    document.getElementById('roiPct').textContent=income>0?Math.round(margin)+'%':'—';
+  } else {
+    let price=parseFloat(document.getElementById('affPrice').value)||0;
+    let comm=parseFloat(document.getElementById('commPct').value)||0;
+    let sales=parseFloat(document.getElementById('estSales').value)||0;
+    if(!price&&prod){const b=ob(prod);if(b){price=b.p;document.getElementById('affPrice').value=b.p;}}
+    const monthly=price*(comm/100)*sales;
+    document.getElementById('rIncome').textContent=sales>0?'$'+Math.round(monthly).toLocaleString()+'/mes':'—';
+    document.getElementById('rCosts').textContent='$0';
+    document.getElementById('rTotal').textContent=sales>0?'$'+Math.round(monthly).toLocaleString()+'/mes':'—';
+    document.getElementById('rTotalRow').classList.remove('neg');
+    document.getElementById('roiFill').style.width=Math.min(comm*3,100)+'%';
+    document.getElementById('roiFill').classList.remove('neg');
+    document.getElementById('roiPct').textContent=comm>0?comm+'% comisión':'—';
+  }
+}
+function selectCalc(id){
+  document.getElementById('calcProduct').value=id;
+  calcUpdate();
+  document.getElementById('adminSide').scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+// ── COMM TABLE ──
+function buildCommTable(){
+  document.getElementById('commTable').innerHTML=COMMS.map(c=>`
+    <div class="comm-row">
+      <span class="cl">${c.n}</span>
+      <span style="${c.hi?'color:var(--green)':''}">${c.v}</span>
+    </div>`).join('');
+}
+
+// ── PRODUCT CRUD ──
+function openModal(aiMode=false){
+  editingId=null; clearForm();
+  document.getElementById('modalTitle').innerHTML='<i class="ti ti-package" style="color:var(--accent);margin-right:6px"></i>Agregar producto';
+  document.getElementById('modalOverlay').classList.add('open');
+  if(aiMode) setTimeout(()=>document.getElementById('aiQuery').focus(),120);
+}
+function closeModal(){document.getElementById('modalOverlay').classList.remove('open');editingId=null;clearForm();}
+function closeOut(e){if(e.target.id==='modalOverlay')closeModal();}
+
+const FIELD_MAP={pAmazon:'amazon',pML:'mercadolibre',pAli:'aliexpress',pTemu:'temu',pEbay:'ebay',pLinio:'linio',
+  pWalmart:'walmart',pLiverpool:'liverpool',pBodega:'bodega',pCoppel:'coppel',
+  pSuburbia:'suburbia',pSears:'sears',pSams:'sams',pCostco:'costco'};
+
+function clearForm(){
+  ['fName','fLink','fNotes','aiQuery','fEmoji',...Object.keys(FIELD_MAP)].forEach(id=>{
+    const el=document.getElementById(id);if(el)el.value='';
+  });
+  document.getElementById('fCat').selectedIndex=0;
+  document.getElementById('aiBubble').className='ai-bubble';
+  document.getElementById('aiBubble').innerHTML='';
+}
+
+function editProduct(id){
+  const p=products.find(x=>x.id===id);if(!p)return;
+  editingId=id;
+  document.getElementById('fName').value=p.name;
+  document.getElementById('fCat').value=p.cat;
+  document.getElementById('fEmoji').value=p.emoji;
+  document.getElementById('fLink').value=p.link||'';
+  document.getElementById('fNotes').value=p.notes||'';
+  Object.entries(FIELD_MAP).forEach(([elId,key])=>document.getElementById(elId).value=p.prices[key]||'');
+  document.getElementById('modalTitle').innerHTML='<i class="ti ti-pencil" style="color:var(--accent);margin-right:6px"></i>Editar producto';
+  document.getElementById('modalOverlay').classList.add('open');
+}
+
+function saveProduct(){
+  const name=document.getElementById('fName').value.trim();
+  if(!name){showToast('Escribe el nombre del producto','err');return;}
+  const prices={};
+  Object.entries(FIELD_MAP).forEach(([elId,key])=>prices[key]=parseFloat(document.getElementById(elId).value)||0);
+  const cat=document.getElementById('fCat').value;
+  const prod={id:editingId||Date.now(),name,cat,
+    emoji:document.getElementById('fEmoji').value.trim()||catEmoji(cat),
+    link:document.getElementById('fLink').value.trim(),
+    notes:document.getElementById('fNotes').value.trim(),prices};
+  if(editingId){const i=products.findIndex(p=>p.id===editingId);products[i]=prod;showToast('Producto actualizado');}
+  else{products.push(prod);showToast('Producto agregado');}
+  save();closeModal();render();if(isAdmin)updateCalcSelect();
+}
+
+function deleteProduct(id){
+  if(!confirm('¿Eliminar este producto?'))return;
+  products=products.filter(p=>p.id!==id);
+  save();render();if(isAdmin)updateCalcSelect();showToast('Eliminado');
+}
+
+function catEmoji(cat){
+  return {'📱 Smartphones':'📱','💻 Laptops':'💻','📟 Tablets':'📟','🎮 Gaming':'🎮',
+    '🎧 Audio':'🎧','📺 TVs':'📺','⌚ Wearables':'⌚','📷 Fotografía':'📷',
+    '🖥️ Cómputo':'🖥️','🔌 Hogar inteligente':'🔌','🔋 Accesorios':'🔋'}[cat]||'📦';
+}
+
+// ── AFFILIATE LINKS ──
+function openAffModal(){
+  document.getElementById('affAmazon').value=aff.amazon||'';
+  document.getElementById('affML').value=aff.mercadolibre||'';
+  document.getElementById('affAli').value=aff.aliexpress||'';
+  document.getElementById('affTemu').value=aff.temu||'';
+  document.getElementById('affOverlay').classList.add('open');
+}
+function closeAffModal(){document.getElementById('affOverlay').classList.remove('open');}
+function saveAff(){
+  aff.amazon=document.getElementById('affAmazon').value.trim();
+  aff.mercadolibre=document.getElementById('affML').value.trim();
+  aff.aliexpress=document.getElementById('affAli').value.trim();
+  aff.temu=document.getElementById('affTemu').value.trim();
+  saveAffData();closeAffModal();showToast('Links de afiliado guardados ✓');
+}
+
+// ── AI AUTOFILL ──
+async function aiAutoFill(){
+  const query=document.getElementById('aiQuery').value.trim();
+  if(!query){showToast('Escribe el nombre primero','err');return;}
+  const btn=document.getElementById('aiFillBtn');
+  btn.disabled=true;
+  btn.innerHTML='<i class="ti ti-loader spinning" style="font-size:13px"></i> Buscando...';
+  const bubble=document.getElementById('aiBubble');
+  bubble.className='ai-bubble';bubble.innerHTML='';
+  try{
+    const res=await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({
+        model:'claude-sonnet-4-20250514',max_tokens:1000,
+        system:`Eres experto en precios de electrónicos en México 2025. Responde SOLO con JSON válido sin markdown ni texto extra:
+{"name":"nombre completo","cat":"una de: 📱 Smartphones|💻 Laptops|📟 Tablets|🎮 Gaming|🎧 Audio|📺 TVs|⌚ Wearables|📷 Fotografía|🖥️ Cómputo|🔌 Hogar inteligente|🔋 Accesorios","emoji":"emoji","prices":{"amazon":0,"mercadolibre":0,"aliexpress":0,"temu":0,"ebay":0,"linio":0,"walmart":0,"liverpool":0,"bodega":0,"coppel":0,"suburbia":0,"sears":0,"sams":0,"costco":0},"notes":"nota breve sobre dónde conviene comprar"}
+Precios realistas en MXN. Pon 0 si la tienda normalmente no vende ese producto.`,
+        messages:[{role:'user',content:`Producto: ${query}`}]
+      })
+    });
+    const data=await res.json();
+    const text=data.content.map(c=>c.text||'').join('');
+    const json=JSON.parse(text.replace(/```json|```/g,'').trim());
+    document.getElementById('fName').value=json.name||query;
+    document.getElementById('fCat').value=json.cat||'📱 Smartphones';
+    document.getElementById('fEmoji').value=json.emoji||'📦';
+    document.getElementById('fNotes').value=json.notes||'';
+    Object.entries(FIELD_MAP).forEach(([elId,key])=>document.getElementById(elId).value=json.prices?.[key]||'');
+    const priceTxt=ALL.filter(s=>(json.prices?.[s.key]||0)>0)
+      .sort((a,b)=>json.prices[a.key]-json.prices[b.key])
+      .map(s=>`<b>${s.e} ${s.name}</b>: $${json.prices[s.key].toLocaleString()}`).join(' · ');
+    bubble.innerHTML=`✦ Precios estimados:<br>${priceTxt||'Sin datos'}<br><small style="color:var(--muted)">Verifica los precios antes de publicar.</small>`;
+    bubble.className='ai-bubble on';
+    showToast('¡Completado con IA!');
+  }catch(e){
+    bubble.innerHTML='<span style="color:var(--accent2)">Error al obtener datos. Intenta con un nombre más específico.</span>';
+    bubble.className='ai-bubble on';
+  }finally{
+    btn.disabled=false;
+    btn.innerHTML='<i class="ti ti-sparkles" style="font-size:13px"></i> IA';
+  }
+}
+
+// ── TOAST ──
+function showToast(msg,type){
+  const t=document.getElementById('toast');
+  document.getElementById('toastMsg').textContent=msg;
+  const icon=document.getElementById('toastIcon');
+  icon.className=type==='err'?'ti ti-alert-circle':'ti ti-check';
+  icon.style.color=type==='err'?'var(--accent2)':'var(--green)';
+  t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),2500);
+}
+
+// ── INIT ──
+load();
+render();
+</script>
+</body>
+</html>
