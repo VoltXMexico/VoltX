@@ -304,9 +304,6 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:1rem 2
     <button class="nav-btn primary" id="addBtn" onclick="openModal()" style="display:none">
       <i class="ti ti-plus" style="font-size:14px"></i> Agregar
     </button>
-    <button class="nav-btn" id="adminLoginBtn" onclick="openLogin()">
-      <i class="ti ti-lock" style="font-size:14px"></i> Admin
-    </button>
     <button class="nav-btn" id="adminLogoutBtn" onclick="logout()" style="display:none">
       <i class="ti ti-logout" style="font-size:14px"></i> Salir
     </button>
@@ -331,7 +328,7 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:1rem 2
   <div class="search-wrap">
     <div class="search-wrap-inner">
       <i class="ti ti-search search-icon"></i>
-      <input type="text" class="search-input" id="searchInput" placeholder="Buscar productos..." oninput="render()"/>
+      <input type="text" class="search-input" id="searchInput" placeholder="Buscar productos..." oninput="checkSecret(this.value);render()"/>
     </div>
   </div>
 </div>
@@ -661,12 +658,19 @@ function doLogin(){
 }
 function logout(){isAdmin=false;applyMode();showToast('Sesión cerrada');}
 
+// Código secreto: escribe ##admin en el buscador
+function checkSecret(val){
+  if(val==="##admin"){
+    document.getElementById("searchInput").value="";
+    openLogin();
+  }
+}
+
 function applyMode(){
   // nav
   document.getElementById('adminBadge').classList.toggle('on',isAdmin);
   document.getElementById('addBtn').style.display=isAdmin?'flex':'none';
   document.getElementById('affBtn').style.display=isAdmin?'flex':'none';
-  document.getElementById('adminLoginBtn').style.display=isAdmin?'none':'flex';
   document.getElementById('adminLogoutBtn').style.display=isAdmin?'flex':'none';
   // side
   document.getElementById('pubSide').style.display=isAdmin?'none':'block';
