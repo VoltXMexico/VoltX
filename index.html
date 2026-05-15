@@ -550,9 +550,14 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:1rem 2
         </select>
       </div>
       <div class="form-row">
-        <label class="form-label">Emoji</label>
+        <label class="form-label">Emoji (si no hay imagen)</label>
         <input class="form-input" id="fEmoji" placeholder="📱" maxlength="4"/>
       </div>
+    </div>
+    <div class="form-row">
+      <label class="form-label">🖼️ URL de imagen del producto (opcional)</label>
+      <input class="form-input" id="fImg" placeholder="Clic derecho en la foto del producto → Copiar dirección de imagen" oninput="previewImg(this.value)"/>
+      <img id="imgPreview" style="display:none;width:80px;height:80px;object-fit:contain;margin-top:0.5rem;border-radius:8px;border:1px solid var(--border)"/>
     </div>
     <div class="form-row">
       <label class="form-label">Precios por tienda (MXN) — 0 si no disponible</label>
@@ -572,8 +577,21 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:1rem 2
       </div>
     </div>
     <div class="form-row">
-      <label class="form-label">Tu link de afiliado (opcional — reemplaza el link genérico)</label>
-      <input class="form-input" id="fLink" placeholder="https://amzn.to/... o https://mercadolibre.com/..."/>
+      <label class="form-label">🔗 Links de afiliado por tienda (opcionales — para rastreo exacto)</label>
+      <div class="spf-grid" style="margin-top:0.4rem">
+        <div class="spf"><label>🟠 Amazon</label><input type="text" id="lkAmazon" placeholder="https://amzn.to/..."/></div>
+        <div class="spf"><label>🟡 Mercado Libre</label><input type="text" id="lkML" placeholder="https://mercadolibre.com.mx/social/..."/></div>
+        <div class="spf"><label>🔴 AliExpress</label><input type="text" id="lkAli" placeholder="https://s.click.aliexpress.com/..."/></div>
+        <div class="spf"><label>🔵 Walmart</label><input type="text" id="lkWalmart" placeholder="https://walmart.com.mx/..."/></div>
+        <div class="spf"><label>🟣 Liverpool</label><input type="text" id="lkLiverpool" placeholder="https://liverpool.com.mx/..."/></div>
+        <div class="spf"><label>🟢 Bodega</label><input type="text" id="lkBodega" placeholder="https://bodegaaurrera.com.mx/..."/></div>
+        <div class="spf"><label>🟡 Coppel</label><input type="text" id="lkCoppel" placeholder="https://coppel.com/..."/></div>
+        <div class="spf"><label>🔴 Sam's</label><input type="text" id="lkSams" placeholder="https://sams.com.mx/..."/></div>
+      </div>
+    </div>
+    <div class="form-row">
+      <label class="form-label">Link general (opcional)</label>
+      <input class="form-input" id="fLink" placeholder="Link principal del producto"/>
     </div>
     <div class="form-row">
       <label class="form-label">Notas internas</label>
@@ -613,8 +631,7 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:1rem 2
 // ═══════════════════════════════════════════
 // CONFIGURACIÓN — cambia esto antes de publicar
 // ═══════════════════════════════════════════
-const ADMIN_PASSWORD = 'Delta77'; 
-
+const ADMIN_PASSWORD = 'Delta77';
 const ONLINE = [
   {key:'amazon',      name:'Amazon',       e:'🟠'},
   {key:'mercadolibre',name:'Mercado Libre',e:'🟡'},
@@ -733,7 +750,9 @@ function worstOf(p,stores){
 const ob=(p)=>bestOf(p,ALL);
 const ow=(p)=>worstOf(p,ALL);
 const sav=(p)=>{const b=ob(p),w=ow(p);return b&&w?w.p-b.p:0;};
-function storeUrl(key,name){
+function storeUrl(key,name,p){
+  // Use product-specific link first, then affiliate link, then generic search
+  if(p&&p.storeLinks&&p.storeLinks[key]) return p.storeLinks[key];
   const fn=STORE_URLS[key];
   return fn?fn(name,aff[key]||''):'#';
 }
@@ -856,12 +875,13 @@ function render(){
 function renderPublic(p){
   const best=ob(p), worst=ow(p);
   const saving=best&&worst?worst.p-best.p:0;
+  const imgHtml=p.img?`<img src="${p.img}" style="width:56px;height:56px;object-fit:contain;border-radius:8px;" onerror="this.style.display='none'">`:`<span style="font-size:2rem">${p.emoji||'📦'}</span>`;
 
   const makeRow=(stores,label)=>{
     const cards=stores.map(s=>{
       const price=p.prices[s.key]||0;
       const isBest=best&&s.key===best.s.key&&price>0;
-      const url=storeUrl(s.key,p.name);
+      const url=storeUrl(s.key,p.name,p);
       return `<a class="store-btn${isBest?' best':''}${!price?' unavail':''}"
         href="${price?url:'#'}" ${price?'target="_blank" rel="noopener"':''}>
         <div class="sname">${s.e} ${s.name}</div>
@@ -907,7 +927,7 @@ function renderAdmin(p){
 
   return `<div class="product-row-admin">
     <div class="pr-top">
-      <div class="pr-emoji">${p.emoji||'📦'}</div>
+      <div class="pr-emoji">${p.img?`<img src="${p.img}" style="width:100%;height:100%;object-fit:contain;border-radius:6px" onerror="this.style.display='none'">`:`<span style="font-size:1.8rem">${p.emoji||'📦'}</span>`}</div>
       <div class="pr-info">
         <div class="pr-name">${p.name}</div>
         <div class="pr-cat">${p.cat} ${p.notes?'· '+p.notes:''}</div>
@@ -1025,14 +1045,17 @@ function closeOut(e){if(e.target.id==='modalOverlay')closeModal();}
 
 const FIELD_MAP={pAmazon:'amazon',pML:'mercadolibre',pAli:'aliexpress',
   pWalmart:'walmart',pLiverpool:'liverpool',pBodega:'bodega',pCoppel:'coppel',pSams:'sams'};
+const LINK_MAP={lkAmazon:'amazon',lkML:'mercadolibre',lkAli:'aliexpress',
+  lkWalmart:'walmart',lkLiverpool:'liverpool',lkBodega:'bodega',lkCoppel:'coppel',lkSams:'sams'};
 
 function clearForm(){
-  ['fName','fLink','fNotes','aiQuery','fEmoji',...Object.keys(FIELD_MAP)].forEach(id=>{
+  ['fName','fLink','fNotes','aiQuery','fEmoji','fImg',...Object.keys(FIELD_MAP),...Object.keys(LINK_MAP)].forEach(id=>{
     const el=document.getElementById(id);if(el)el.value='';
   });
   document.getElementById('fCat').selectedIndex=0;
   document.getElementById('aiBubble').className='ai-bubble';
   document.getElementById('aiBubble').innerHTML='';
+  document.getElementById('imgPreview').style.display='none';
 }
 
 function editProduct(id){
@@ -1041,11 +1064,20 @@ function editProduct(id){
   document.getElementById('fName').value=p.name;
   document.getElementById('fCat').value=p.cat;
   document.getElementById('fEmoji').value=p.emoji;
+  document.getElementById('fImg').value=p.img||'';
   document.getElementById('fLink').value=p.link||'';
   document.getElementById('fNotes').value=p.notes||'';
   Object.entries(FIELD_MAP).forEach(([elId,key])=>document.getElementById(elId).value=p.prices[key]||'');
+  Object.entries(LINK_MAP).forEach(([elId,key])=>document.getElementById(elId).value=p.storeLinks?.[key]||'');
+  if(p.img){const pv=document.getElementById('imgPreview');pv.src=p.img;pv.style.display='block';}
   document.getElementById('modalTitle').innerHTML='<i class="ti ti-pencil" style="color:var(--accent);margin-right:6px"></i>Editar producto';
   document.getElementById('modalOverlay').classList.add('open');
+}
+
+function previewImg(url){
+  const pv=document.getElementById('imgPreview');
+  if(url){pv.src=url;pv.style.display='block';}
+  else{pv.style.display='none';}
 }
 
 function saveProduct(){
@@ -1068,18 +1100,24 @@ function saveProduct(){
       history.push({date:now,prices:{...old.prices},changed});
       if(history.length>10) history.shift();
     }
+    const storeLinks={};
+    Object.entries(LINK_MAP).forEach(([elId,key])=>storeLinks[key]=document.getElementById(elId).value.trim());
     products[i]={...old,name,cat,
       emoji:document.getElementById('fEmoji').value.trim()||catEmoji(cat),
+      img:document.getElementById('fImg').value.trim(),
       link:document.getElementById('fLink').value.trim(),
       notes:document.getElementById('fNotes').value.trim(),
-      prices,history,updatedAt:now};
+      prices,storeLinks,history,updatedAt:now};
     showToast('Producto actualizado ✓');
   } else {
+    const storeLinks={};
+    Object.entries(LINK_MAP).forEach(([elId,key])=>storeLinks[key]=document.getElementById(elId).value.trim());
     const prod={id:Date.now(),name,cat,
       emoji:document.getElementById('fEmoji').value.trim()||catEmoji(cat),
+      img:document.getElementById('fImg').value.trim(),
       link:document.getElementById('fLink').value.trim(),
       notes:document.getElementById('fNotes').value.trim(),
-      prices,history:[],createdAt:now,updatedAt:now};
+      prices,storeLinks,history:[],createdAt:now,updatedAt:now};
     products.push(prod);showToast('Producto agregado ✓');
   }
   save();closeModal();render();if(isAdmin)updateCalcSelect();
@@ -1184,4 +1222,3 @@ render();
 </script>
 </body>
 </html>
-
