@@ -50,6 +50,16 @@
   --accent:#7C5CFC;--accent2:#FC5C7D;--green:#22c97a;--amber:#f5a623;
   --text:#f0f0f8;--muted:#7a7a99;--border:rgba(255,255,255,0.07);--border2:rgba(255,255,255,0.12);
 }
+body.light-mode{
+  --bg:#f4f4f8;--surface:#ffffff;--card:#ffffff;--card2:#f0f0f6;
+  --text:#0d0d1a;--muted:#6b6b88;--border:rgba(0,0,0,0.08);--border2:rgba(0,0,0,0.15);
+}
+body.light-mode nav{background:rgba(244,244,248,0.97);}
+body.light-mode .hero-strip{background:linear-gradient(90deg,rgba(124,92,252,0.06),rgba(252,92,125,0.04));}
+.theme-btn{background:transparent;border:1px solid var(--border2);color:var(--muted);
+  border-radius:8px;padding:0.4rem 0.7rem;font-size:1rem;cursor:pointer;
+  transition:all 0.2s;line-height:1}
+.theme-btn:hover{border-color:var(--accent);color:var(--accent)}
 body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min-height:100vh}
 
 /* ── NAV ── */
@@ -350,6 +360,7 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:1rem 2
 <nav>
   <div class="logo">VOLT<span>X</span><sub id="navSub">ofertas</sub></div>
   <div class="nav-right">
+    <button class="theme-btn" id="themeBtn" onclick="toggleTheme()" title="Cambiar tema">🌙</button>
     <span class="admin-badge" id="adminBadge"><i class="ti ti-shield-check" style="font-size:13px"></i> Modo Admin</span>
     <button class="nav-btn" id="affBtn" onclick="openAffModal()" style="display:none">
       <i class="ti ti-link" style="font-size:14px"></i> Mis links
@@ -866,7 +877,15 @@ function render(){
   updateStats();
   const el=document.getElementById('productsList');
   if(!list.length){
-    el.innerHTML=`<div class="empty"><i class="ti ti-mood-empty"></i><h3>${isAdmin?'Sin productos aún':'Sin resultados'}</h3><p>${isAdmin?'Agrega tu primer producto con el botón de arriba.':'Prueba otro filtro o categoría.'}</p></div>`;
+    if(!isAdmin && products.length===0){
+    // Show demo products for public when no products added yet
+    el.innerHTML=`<div style="text-align:center;padding:2rem;color:var(--muted);font-size:0.9rem;background:var(--card);border-radius:12px;border:1px solid var(--border)">
+      <i class="ti ti-rocket" style="font-size:2rem;display:block;margin-bottom:0.5rem;opacity:0.4"></i>
+      <b style="color:var(--text)">¡Próximamente!</b><br>Estamos preparando las mejores ofertas. Vuelve pronto.
+    </div>`;
+    return;
+  }
+  el.innerHTML=`<div class="empty"><i class="ti ti-mood-empty"></i><h3>${isAdmin?'Sin productos aún':'Sin resultados'}</h3><p>${isAdmin?'Agrega tu primer producto con el botón de arriba.':'Prueba otro filtro o categoría.'}</p></div>`;
     return;
   }
   el.innerHTML=list.map(p=>isAdmin?renderAdmin(p):renderPublic(p)).join('');
@@ -1216,8 +1235,23 @@ function showToast(msg,type){
   setTimeout(()=>t.classList.remove('show'),2500);
 }
 
+// ── THEME ──
+function toggleTheme(){
+  const isLight=document.body.classList.toggle('light-mode');
+  document.getElementById('themeBtn').textContent=isLight?'🌙':'☀️';
+  localStorage.setItem('voltx_theme', isLight?'light':'dark');
+}
+function loadTheme(){
+  const saved=localStorage.getItem('voltx_theme');
+  if(saved==='light'){
+    document.body.classList.add('light-mode');
+    document.getElementById('themeBtn').textContent='🌙';
+  }
+}
+
 // ── INIT ──
 load();
+loadTheme();
 render();
 </script>
 </body>
